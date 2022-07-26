@@ -678,6 +678,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerName: {fileID: 1968519707}
+  menuCanvas: {fileID: 574426140}
 --- !u!4 &799848852
 Transform:
   m_ObjectHideFlags: 0

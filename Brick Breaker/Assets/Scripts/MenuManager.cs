@@ -8,6 +8,7 @@ public class MenuManager : MonoBehaviour
 {
     public static MenuManager Instance;
     public Text playerName;
+    public Canvas menuCanvas;
 
     private void Awake()
     {
@@ -19,6 +20,7 @@ public class MenuManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(menuCanvas.gameObject);
     }
 
     public void OnStartButtonClicked()
