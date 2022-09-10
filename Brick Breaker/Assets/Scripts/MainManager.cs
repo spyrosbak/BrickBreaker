@@ -10,19 +10,28 @@ public class MainManager : MonoBehaviour
     public int LineCount = 6;
     public Rigidbody Ball;
 
+    public Text NameText;
     public Text ScoreText;
     public Text HighScoreText;
     public GameObject GameOverText;
-    
+
+    private float rotationSpeed = 1.5f;
     private bool m_Started = false;
     private int m_Points;
     
     private bool m_GameOver = false;
-    
+
+    private void Awake()
+    {
+        MenuManager.Instance.LoadPlayerData();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         MenuManager.Instance.menuCanvas.gameObject.SetActive(false);
+        HighScoreText.text = "Best Score: " + MenuManager.Instance.topPlayer.ToString() + " : " + MenuManager.Instance.bestScore.ToString();
+        NameText.text = "Player Name : " + MenuManager.Instance.playerName.text;
 
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
@@ -62,6 +71,8 @@ public class MainManager : MonoBehaviour
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
         }
+
+        RenderSettings.skybox.SetFloat("_Rotation", Time.time * rotationSpeed);
     }
 
     void AddPoint(int point)
@@ -75,6 +86,13 @@ public class MainManager : MonoBehaviour
         m_GameOver = true;
         GameOverText.SetActive(true);
 
-        HighScoreText.text = "Best Score: " + MenuManager.Instance.playerName.text + ":" + m_Points;
+        if(m_Points > MenuManager.Instance.bestScore)
+        {
+            MenuManager.Instance.topPlayer = MenuManager.Instance.playerName.text;
+            MenuManager.Instance.bestScore = m_Points;
+            MenuManager.Instance.SavePlayerData();
+        }
+
+        HighScoreText.text = "Best Score: " + MenuManager.Instance.topPlayer.ToString() + ":" + MenuManager.Instance.bestScore.ToString();
     }
 }

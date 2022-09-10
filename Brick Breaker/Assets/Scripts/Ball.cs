@@ -6,6 +6,9 @@ using UnityEngine;
 public class Ball : MonoBehaviour
 {
     private Rigidbody m_Rigidbody;
+    public AudioSource bounceSound;
+    public AudioSource hitSound;
+    public AudioSource loseSound;
 
     void Start()
     {
@@ -32,5 +35,21 @@ public class Ball : MonoBehaviour
         }
 
         m_Rigidbody.velocity = velocity;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Wall") || collision.gameObject.CompareTag("Paddle"))
+        {
+            bounceSound.Play();
+        }
+        else if(collision.gameObject.CompareTag("Floor"))
+        {
+            loseSound.Play();
+        }
+        else
+        {
+            hitSound.Play();
+        }
     }
 }
