@@ -48,9 +48,6 @@ ExportedObj/
 *.mp3
 *.mp4
 *.jpg
-*.meta
-*.asset
-*.otf
 *.psd
 
 # Unity3D generated meta files
