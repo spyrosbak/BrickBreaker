@@ -14,12 +14,14 @@ public class MainManager : MonoBehaviour
     public Text ScoreText;
     public Text HighScoreText;
     public GameObject GameOverText;
+    public GameObject LevelClearedText;
 
     private float rotationSpeed = 1.5f;
     private bool m_Started = false;
-    private int m_Points;
+    public int m_Points;
     
     private bool m_GameOver = false;
+    private bool m_LevelClear = false;
 
     private void Awake()
     {
@@ -39,7 +41,7 @@ public class MainManager : MonoBehaviour
         int[] pointCountArray = new [] {1,1,2,2,5,5};
         for (int i = 0; i < LineCount; ++i)
         {
-            for (int x = 0; x < perLine; ++x)
+            for (int x = 0; x < LineCount; ++x)
             {
                 Vector3 position = new Vector3(-1.5f + step * x, 2.5f + i * 0.3f, 0);
                 var brick = Instantiate(BrickPrefab, position, Quaternion.identity);
@@ -71,6 +73,13 @@ public class MainManager : MonoBehaviour
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
         }
+        else if (m_LevelClear)
+        {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            }
+        }
 
         RenderSettings.skybox.SetFloat("_Rotation", Time.time * rotationSpeed);
     }
@@ -94,5 +103,13 @@ public class MainManager : MonoBehaviour
         }
 
         HighScoreText.text = "Best Score: " + MenuManager.Instance.topPlayer.ToString() + ":" + MenuManager.Instance.bestScore.ToString();
+    }
+
+    public void LevelClear()
+    {
+        m_LevelClear = true;
+        LevelClearedText.SetActive(true);
+
+        Destroy(Ball);
     }
 }
