@@ -1,13 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
-public class MainManager : MonoBehaviour
+public class LevelManager : MonoBehaviour
 {
-    public static MainManager Instance;
-
     public Canvas canvas;
     public Brick BrickPrefab;
     public int LineCount = 6;
@@ -22,23 +20,18 @@ public class MainManager : MonoBehaviour
     private float rotationSpeed = 1.5f;
     private bool m_Started = false;
     public int m_Points;
-    
+
     private bool m_GameOver = false;
     private bool m_LevelClear = false;
 
     private void Awake()
     {
-        if (Instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
-        DontDestroyOnLoad(canvas.gameObject);
-
         MenuManager.Instance.LoadPlayerData();
+
+        NameText = MainManager.Instance.NameText;
+        ScoreText = MainManager.Instance.ScoreText;
+        HighScoreText = MainManager.Instance.HighScoreText;
+        GameOverText = MainManager.Instance.GameOverText;
     }
 
     // Start is called before the first frame update
@@ -48,7 +41,7 @@ public class MainManager : MonoBehaviour
         HighScoreText.text = "Best Score: " + MenuManager.Instance.topPlayer.ToString() + " : " + MenuManager.Instance.bestScore.ToString();
         NameText.text = "Player Name : " + MenuManager.Instance.playerName.text;
 
-        if(SceneManager.GetActiveScene().buildIndex == 1)
+        if (SceneManager.GetActiveScene().buildIndex == 1)
         {
             const float step = 0.6f;
             int perLine = Mathf.FloorToInt(4.0f / step);
@@ -112,7 +105,7 @@ public class MainManager : MonoBehaviour
         m_GameOver = true;
         GameOverText.SetActive(true);
 
-        if(m_Points > MenuManager.Instance.bestScore)
+        if (m_Points > MenuManager.Instance.bestScore)
         {
             MenuManager.Instance.topPlayer = MenuManager.Instance.playerName.text;
             MenuManager.Instance.bestScore = m_Points;

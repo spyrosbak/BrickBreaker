@@ -3,12 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class Brick : MonoBehaviour
 {
     public UnityEvent<int> onDestroyed;
     private MainManager mainManager;
-    
+    private LevelManager levelManager;
     
     public int PointValue;
 
@@ -44,9 +45,20 @@ public class Brick : MonoBehaviour
         //slight delay to be sure the ball have time to bounce
         Destroy(gameObject, 0.2f);
 
-        if(mainManager.m_Points == 99)
+        if(SceneManager.GetActiveScene().buildIndex == 1)
         {
-            mainManager.LevelClear();
+            if (mainManager.m_Points >= 96)
+            {
+                mainManager.LevelClear();
+            }
+        }
+        else if (SceneManager.GetActiveScene().buildIndex == 2)
+        {
+            levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+            if (mainManager.m_Points >= 166)
+            {
+                levelManager.LevelClear();
+            }
         }
     }
 }
